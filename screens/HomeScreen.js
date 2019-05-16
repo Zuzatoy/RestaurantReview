@@ -8,13 +8,14 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Header from './components/Header';
 
 
 const puppies = [
-  {name: 'Rocket', address: 'My love'},
-  {name: 'Radost', address: 'My sole'},
-  {name: 'Robin', address: 'My proud'},
-  {name: 'Okame', address: 'Little kiwi shit'},
+  {name: 'React Coffee', address: 'Somwhere near'},
+  {name: 'Radux Restaurant', address: 'Already far away'},
+  {name: 'Angular corner', address: 'Meh'},
+  {name: 'Okame Corp', address: 'Little kiwi shit'},
 ]
 
 export default class HomeScreen extends React.Component {
@@ -25,7 +26,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
           <View style={styles.welcomeContainer}>
-            <Text style={styles.text}>Here is new App</Text>
+            <Header />
             <TextInput 
               style={styles.input}
               placeholder="Live Search"

@@ -5,41 +5,47 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TextInput,
   View,
 } from 'react-native';
 
 
-const restaurants = [
-  {name: 'React Cafe', address: '123 Anywhere St'},
-  {name: 'Angular Restaurant', address: '799 Main St'},
-  {name: 'Mobile Place', address: '550 Maple Rd'}
+const puppies = [
+  {name: 'Rocket', address: 'My love'},
+  {name: 'Radost', address: 'My sole'},
+  {name: 'Robin', address: 'My proud'},
+  {name: 'Okame', address: 'Little kiwi shit'},
 ]
 
 export default class HomeScreen extends React.Component {
+  state={
+    search: null
+  }
   render() {
     return (
       <View style={styles.container}>
           <View style={styles.welcomeContainer}>
             <Text style={styles.text}>Here is new App</Text>
+            <TextInput 
+              style={styles.input}
+              placeholder="Live Search"
+              onChangeText={text => {
+                this.setState({ search: text })
+              }}
+              value={this.state.search} />
         </View>
         {
-          restaurants.map((place, index) => {
+          puppies.filter(place => {
+            return !this.state.search || 
+              place.name.toLowerCase().indexOf(this.state.search.toLowerCase()) > -1}).map((place, index) => {
             return(
               <View key={place.name} style={{
                 flexDirection: 'row'
               }}>
-              <View style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
+              <View style={styles.index}>
                 <Text>{index + 1}</Text>
               </View>
-                <View style={{
-                  flexDirection: 'column',
-                  flex: 8
-                }}>
+                <View style={styles.name}>
                   <Text>{place.name}</Text>
                   <Text style={{color: 'purple'}}>{place.address}</Text>
                 </View>
@@ -66,20 +72,25 @@ const styles = StyleSheet.create({
     color: '#0066CC',
     fontWeight: '300',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
+  index: {
+    flex: 1,
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    justifyContent: 'center',
+    padding: 5
+  },
+  name: {
+    flexDirection: 'column',
+    flex: 8
+  },
+  input: {
+    marginBottom: 30,
+    padding: 10,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    color: '#444',
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#F5F5F5'
   },
   welcomeImage: {
     width: 100,

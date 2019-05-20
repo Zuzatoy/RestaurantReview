@@ -6,10 +6,11 @@ import {
   Text,
   TextInput,
   View,
-  FlatList,
+  FlatList
 } from 'react-native';
 import Header from './components/Header';
 import RestaurantRow from './components/RestaurantRow';
+import PizzaImage from 'images/pizza.png';
 import axios from 'axios';
 
 
@@ -29,6 +30,11 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex:1 }}>
+      <View style={{
+        marginTop: 40,
+        alignItems: 'center'  }}>
+        <Image source={PizzaImage} />
+        </View>
       
             <Header />
             <TextInput 

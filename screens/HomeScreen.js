@@ -10,35 +10,26 @@ import {
 } from 'react-native';
 import Header from './components/Header';
 import RestaurantRow from './components/RestaurantRow';
+import axios from 'axios';
 
 
-const puppies = [
-  {name: 'React Coffee', address: 'Somwhere near'},
-  {name: 'Radux Restaurant', address: 'Already far away'},
-  {name: 'Angular corner', address: 'Meh'},
-  {name: 'Okame Corp', address: 'Little kiwi shit'},
-  {name: 'React Central', address: 'Somwhere near'},
-  {name: 'Radux Moscow', address: 'Already far away'},
-  {name: 'Angular For You', address: 'Meh'},
-  {name: 'Okame The Pyes', address: 'Little kiwi shit'},
-  {name: 'React No really', address: 'Somwhere near'},
-  {name: 'Radux Yes', address: 'Already far away'},
-  {name: 'Angular No', address: 'Meh'},
-  {name: 'Okame Maybe', address: 'Little kiwi shit'},
-  {name: 'React Okey Then', address: 'Somwhere near'},
-  {name: 'Radux Almost Forgot', address: 'Already far away'},
-  {name: 'Angular shit me', address: 'Meh'},
-  {name: 'Okame stupid shit', address: 'Little kiwi shit'}
-]
 
 export default class HomeScreen extends React.Component {
   state={
-    search: null
+    search: null,
+    puppies: [],
   }
+
+
+  componentDidMount() {
+    axios.get('http://localhost:3000/restaurants')
+      .then( result => this.setState({ puppies: result.data}))
+  };
+
   render() {
     return (
-      <View style={styles.container}>
-          <View style={styles.welcomeContainer}>
+      <View style={{ flex:1 }}>
+      
             <Header />
             <TextInput 
               style={styles.input}
@@ -47,9 +38,9 @@ export default class HomeScreen extends React.Component {
                 this.setState({ search: text })
               }}
               value={this.state.search} />
-        </View>
+
         <FlatList
-          data = {puppies.filter(place => {return !this.state.search ||
+          data = {this.state.puppies.filter(place => {return !this.state.search ||
                 place.name.toLowerCase().indexOf(this.state.search.toLowerCase()) > -1
             })
           }

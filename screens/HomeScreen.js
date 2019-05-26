@@ -1,165 +1,50 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  FlatList
-} from 'react-native';
-import Header from './components/Header';
-import RestaurantRow from './components/RestaurantRow';
-import PizzaImage from 'images/pizza.png';
-import axios from 'axios';
+  createStackNavigator,
+  createAppContainer,
+  createBottomTabNavigator
+} from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
+import RestaurantList from './components/RestaurantList';
+import RestaurantInfo from './components/RestaurantInfo';
+import About from './components/About';
 
-
-export default class HomeScreen extends React.Component {
-  state={
-    search: null,
-    puppies: [],
+const List = createStackNavigator({
+  Home: { screen: RestaurantList },
+  Info: { screen: RestaurantInfo }
+}, {
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: '#0066cc',
+      color: '#fff'
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: { color: '#fff' }
   }
-
-
-  componentDidMount() {
-    axios.get('http://localhost:3000/restaurants')
-      .then( result => this.setState({ puppies: result.data}))
-  };
-
-  render() {
-    return (
-      <View style={{ flex:1 }}>
-      <View style={{
-        marginTop: 40,
-        alignItems: 'center'  }}>
-        <Image source={PizzaImage} />
-        </View>
-      
-            <Header />
-            <TextInput 
-              style={styles.input}
-              placeholder="Live Search"
-              onChangeText={text => {
-                this.setState({ search: text })
-              }}
-              value={this.state.search} />
-
-        <FlatList
-          data = {this.state.puppies.filter(place => {return !this.state.search ||
-                place.name.toLowerCase().indexOf(this.state.search.toLowerCase()) > -1
-            })
-          }
-        renderItem={({ item, index }) => <RestaurantRow place={item} index={index}  />
-          }
-        keyExtractor={item => item.name}
-        initialNumToRender={10}
-        ListHeaderComponent={<View style={{height: 30}}
-        /> }
-          />
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'pink',
-    flex: 1
-  },
-  text: {
-    padding: 40,
-    fontSize: 30,
-    textAlign: 'center',
-    color: '#0066CC',
-    fontWeight: '300',
-  },
-  index: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 5
-  },
-  name: {
-    flexDirection: 'column',
-    flex: 8
-  },
-  input: {
-    marginBottom: 30,
-    padding: 10,
-    paddingHorizontal: 20,
-    fontSize: 16,
-    color: '#444',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#F5F5F5'
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
 });
+
+const TabNavigator = createBottomTabNavigator({
+  List: { screen: List },
+  About: { screen: About }
+}, {
+  defaultNavigationOptions: ({ navigation }) => {
+    return {
+      tabBarIcon: ({ tintColor }) => {
+        const route = navigation.state.routeName;
+        console.log('route', route);
+        const name = {
+          'List': 'list',
+          'About': 'info-circle'
+        }[route]
+        return <Icon name={name} color={tintColor} size={22} />
+      },
+      tabBarOptions: {
+        activeBackgroundColor: '#E6F0FA'
+      }
+    }
+  }
+});
+
+export default createAppContainer(TabNavigator);
+

@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
@@ -20,6 +21,14 @@ export default class AddReview extends Component {
         rating: 0,
         comment: '',
         submitting: false
+      };
+
+      componentDidMount() {
+        AsyncStorage.getItem("reviewer_name").then(name => {
+          if(name !== null && name !== undefined) {
+           this.setState({ name })
+          }
+        })
       }
 
     close = () => {
@@ -28,6 +37,11 @@ export default class AddReview extends Component {
 
       submitReview = () => {
           this.setState({ submitting: true })
+          if(this.state.name !== null && this.state.name !== undefined) {
+            AsyncStorage.setItem("reviewer_name", this.state.name)
+            } 
+            // To remove from async storage:
+            // AsyncStorage.removeItem("reviewer_name")
           fetch('http://localhost:3000/review', {
               method: 'POST',
               body: JSON.stringify({

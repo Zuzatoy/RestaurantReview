@@ -26,7 +26,7 @@ export default class About extends Component {
         />
 
         <Text style={styles.text}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et ligula ullamcorper, pellentesque magna quis, lobortis quam.
+          Вжик вжик йо йо йо
         </Text>
         <Text style={styles.text}>
           Mauris efficitur elementum cursus. Cras ultrices urna in ex rutrum rutrum nec sit amet lacus. Suspendisse ullamcorper lectus eget ornare venenatis. Suspendisse potenti.
